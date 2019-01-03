@@ -1,7 +1,11 @@
 package com.sleet.assembler
 
-object Assembler {
-  def assemble(source: Traversable[String]): Traversable[Instruction] = ???
+import com.sleet.runtime.{Instruction, State}
 
-  private def toInstruction(line: String): Instruction = ???
+object Assembler {
+  def assemble(source: Traversable[String]): State = ???
+
+  def toInstruction(line: Short): Instruction = ???
+
+  def toInstruction(line: String): Instruction = ???
 }
