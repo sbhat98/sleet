@@ -270,3 +270,27 @@ case class Trap(trapvect8: Short) extends Instruction {
   override def toString: String =
     "TRAP 0x" + trapvect8.toHexString
 }
+
+object GetC extends Trap(0x20) {
+  override def toString: String = "GETC"
+}
+
+object Out extends Trap(0x21) {
+  override def toString: String = "OUT"
+}
+
+object Puts extends Trap(0x22) {
+  override def toString: String = "PUTS"
+}
+
+object In extends Trap(0x23) {
+  override def toString: String = "IN"
+}
+
+object PutsP extends Trap(0x24) {
+  override def toString: String = "PUTSP"
+}
+
+object Halt extends Trap(0x25) {
+  override def toString: String = "HALT"
+}
