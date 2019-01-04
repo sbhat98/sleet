@@ -6,6 +6,20 @@ import com.sleet.runtime.LC3Instructions._
 import scala.util.matching.Regex
 
 object LC3InstructionPatterns {
+  private val numStr2Short: (String, Int) => Short = (num, maxBinaryLength) => {
+    val value =
+      try {
+        if (num.startsWith("X")) Integer.parseInt(num.tail, 16)
+        else Integer.parseInt(num)
+      } catch {
+        case _: NumberFormatException => throw new ValueOutOfBounds(num)
+      }
+    if (value < -Math.pow(2, maxBinaryLength - 1).toInt || value >= Math.pow(2, maxBinaryLength - 1).toInt)
+      throw new ValueOutOfBounds(num)
+    else
+      value.toShort
+  }
+
   private val register: String = "R([0-7])"
   private val s: String = raw"\s*" // space
   private val number: String = raw"(X\d{4}|-?\d+)"
@@ -65,6 +79,33 @@ object LC3InstructionPatterns {
       LoadIndirect(reg.toInt, numStr2Short(offset, 9), label)
     case loadBaseOffset(reg1, reg2, offset) =>
       LoadBaseOffset(reg1.toInt, reg2.toInt, numStr2Short(offset, 6))
-      ???
+    case loadEffectiveAddress(reg, offset) =>
+      LoadEffectiveAddress(reg.toInt, numStr2Short(offset, 9), label)
+    case not(reg1, reg2) =>
+      Not(reg1.toInt, reg2.toInt)
+    case store(reg, offset) =>
+      Store(reg.toInt, numStr2Short(offset, 9), label)
+    case storeIndirect(reg, offset) =>
+      StoreIndirect(reg.toInt, numStr2Short(offset, 9), label)
+    case storeBaseOffset(reg1, reg2, offset) =>
+      StoreBaseOffset(reg1.toInt, reg2.toInt, numStr2Short(offset, 6))
+    case trap(pc) =>
+      val offset = numStr2Short(pc, 9)
+      if (offset < 0) throw new ValueOutOfBounds(pc)
+      else Trap(offset)
+    case getc() =>
+      GetC
+    case out() =>
+      Out
+    case puts() =>
+      Puts
+    case in() =>
+      In
+    case putsp() =>
+      PutsP
+    case halt() =>
+      Halt
+    case _ =>
+      null
   })
 }

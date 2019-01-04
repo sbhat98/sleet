@@ -20,18 +20,10 @@ object Assembler {
   def toInstruction(line: String, label: Option[String]): Option[Instruction] =
     LC3InstructionPatterns.toInstruction(line, label)
 
-  private def buildSymbolTable(source: Iterable[String]): SymbolTable = {
+  // Returns the constructed symbol table and the code stripped of prefix labels
+  private def buildSymbolTable(source: Iterable[String]): (SymbolTable, Iterable[String]) = {
     implicit def int2Short(x: Int): Short = x.toShort
-
-    def buildTable(currentPC: Option[Short], table: SymbolTable, lines: Iterable[String]): SymbolTable = {
-      if (lines.isEmpty) table
-      else {
-        val currLine = lines.head
-
-      }
-    }
-
-    buildTable(None, Map(), source)
+    ???
   }
 
   private def stripComments(line: String): String = line.takeWhile(_ != ';')
