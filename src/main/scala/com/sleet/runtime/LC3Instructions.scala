@@ -240,7 +240,7 @@ object LC3Instructions {
     val toBinary: String =
       "0011" + regToBinary(sourceRegister) + offset9ToBinary(pcOffset9)
     override def toString: String =
-      s"ST R$sourceRegister, ${label.getOrElse("#" + pcOffset9)}"
+      s"STI R$sourceRegister, ${label.getOrElse("#" + pcOffset9)}"
   }
 
   case class StoreBaseOffset(sourceRegister: Int, baseRegister: Int, offset6: Short) extends Instruction {
